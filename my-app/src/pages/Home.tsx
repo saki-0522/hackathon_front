@@ -17,24 +17,26 @@ function Home() {
   const [name, setName] = useState<string>("");
   const [userData, setUserData] = useState<UserData[]>([]);
   const navigate = useNavigate();
-
+  const user_string = sessionStorage.getItem('user');
+  let user;
+  
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
     if (!name) {
       alert("Please enter name");
       return;
     }
-
+    
     if (name.length > 50) {
       alert("Please enter a name shorter than 50 characters");
       return;
     }
-
+    
     if (age < 20 || age > 80) {
       alert("Please enter age between 20 and 80");
       return;
     }
-
+    // fetchを後から消さないといけない
     try{
       const response = await fetch(
         "http://localhost:8000/user",
@@ -48,36 +50,36 @@ function Home() {
             age,
           }),
         }
-      );
-      if (response.status === 200) {
-        fetchUsers();
-      } else {
-        console.error("POST request failed")
+        );
+        if (response.status === 200) {
+          fetchUsers();
+        } else {
+          console.error("POST request failed")
+        }
+        
+        setName("");
+        setAge(0);
+      } catch (err) {
+        console.error(err)
       }
-
-      setName("");
-      setAge(0);
-    } catch (err) {
-      console.error(err)
-    }
-  };
-  const fetchUsers = async () => {
-    try{
-      const getResponse = await fetch("http://localhost:8000/user", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    
-      if (getResponse.status === 200) {
-        // GETリクエストの結果を処理
-        const userData = await getResponse.json();
-        setUserData(userData);
-        // userDataを適切に処理するコードをここに追加
-      } else {
-        // GETリクエストが失敗した場合の処理
-        console.error("GET request failed");
+    };
+    const fetchUsers = async () => {
+      try{
+        const getResponse = await fetch("http://localhost:8000/user", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (getResponse.status === 200) {
+          // GETリクエストの結果を処理
+          const userData = await getResponse.json();
+          setUserData(userData);
+          // userDataを適切に処理するコードをここに追加
+        } else {
+          // GETリクエストが失敗した場合の処理
+          console.error("GET request failed");
       }
     } catch (err) {
       console.error(err)
@@ -87,9 +89,17 @@ function Home() {
   useEffect(() => {
     fetchUsers();
   },[]);
+  
+  if (user_string) {
+    user = JSON.parse(user_string);
+  } else {
+    navigate('/login');
+    return <></>
+  }
 
   const signOutWithEmailAndPassword = () => {
     signOut(fireAuth).then(() => {
+      sessionStorage.clear();
       alert("ログアウトしました");
       navigate('/login');
     }).catch(err => {
@@ -99,6 +109,7 @@ function Home() {
 
   return (
     <div className="App">
+      {user.displayName}
         <button onClick={signOutWithEmailAndPassword}>
         ログアウト
       </button>

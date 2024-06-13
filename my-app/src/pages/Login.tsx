@@ -12,11 +12,28 @@ const LoginForm: React.FC = () => {
 
   const signInWithEmailandPassword = () => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password).then((userCredential: { user: any; }) => {
+    signInWithEmailAndPassword(auth, email, password).then(async (userCredential: { user: any; }) => {
       // Signed in 
       const user = userCredential.user;
-      alert("ログインユーザー: " + user.displayName);
-      setUserName(user.displayName)
+      
+      // エラーハンドリング
+      const getResponse = await fetch(`http://localhost:8000/user?uid=${user.uid}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }})
+        const res = await getResponse.json();
+        let displayName = "";
+      if (res.length > 0) {
+        sessionStorage.setItem('user', JSON.stringify({...user, displayName: res[0].name}));
+        displayName = res[0].name;
+      }else{
+        throw new Error()
+      }
+      
+
+      alert("ログインユーザー: " + displayName);
+      setUserName(displayName)
       navigate('/');
       }).catch((err: any) => {
         alert(err);
