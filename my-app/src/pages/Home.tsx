@@ -36,7 +36,7 @@ function Home() {
       alert("Please enter age between 20 and 80");
       return;
     }
-    // fetchを後から消さないといけない
+    
     try{
       const response = await fetch(
         "http://localhost:8000/user",
@@ -85,7 +85,7 @@ function Home() {
       console.error(err)
     }
   };
-
+  
   useEffect(() => {
     fetchUsers();
   },[]);
@@ -96,7 +96,7 @@ function Home() {
     navigate('/login');
     return <></>
   }
-
+  
   const signOutWithEmailAndPassword = () => {
     signOut(fireAuth).then(() => {
       sessionStorage.clear();
