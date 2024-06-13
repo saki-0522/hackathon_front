@@ -15,16 +15,26 @@
   }
 }
 
-.App-header {
+/* .App-header {
   background-color: #0F3249;
   height: 60px;
-  /* min-height: 20vh; */
   display: row;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* font-size: calc(10px + 2vmin); */
+  font-size: calc(10px + 2vmin);
   font-size: 10px;
+  color: white;
+} */
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
   color: white;
 }
 
@@ -48,4 +58,15 @@
   background-color: #0F3249;
   position: relative;
   bottom: 0px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 中央揃えにする場合 */
+  gap: 10px; /* ボタン間のスペース */
+}
+
+.button-container button {
+  margin: 5px 0;
 }
