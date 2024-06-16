@@ -24,7 +24,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <p>
+        {/* <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
@@ -34,7 +34,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a>
+        </a> */}
         {/* <LoginForm /> */}
         {/* UserがログインしていたらHomeに移動 */}
         {/* {loginUser ? <Home /> : <LoginForm />} */}

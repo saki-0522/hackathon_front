@@ -15,10 +15,14 @@ interface Tweet {
   content: string;
 }
 
-function Post() {
+interface ReplyTweet {
+    posted_by: string;
+    content: string;
+    owner_id: string;
+}
+
+function EachPost() {
   const [content, setContent] = useState("");
-  // const [name, setName] = useState<string>("");
-  // const [userData, setUserData] = useState<UserData[]>([]);
   const navigate = useNavigate();
 
   const goToHomePage = () => {
@@ -35,12 +39,12 @@ function Post() {
     
 
     try{
+        // user情報ではなくてtweet情報もssesionStrogeに入れておく
+        // Home画面で処理？
       let user =sessionStorage.getItem('user');
       if (user) {
         let user_ob = JSON.parse(user);
-        console.log(user_ob);
         let posted_by = user_ob.uid;
-        let displayName = user_ob.displayName;
         const response = await fetch(
           "http://localhost:8000/tweet",
           {
@@ -51,7 +55,6 @@ function Post() {
             body: JSON.stringify({
               content,
               posted_by,
-              displayName,
             }),
           }
         );
@@ -63,7 +66,6 @@ function Post() {
         setContent("");
       } else {
         navigate('/login');
-        // return <></>
       }
     } catch (err) {
       console.error(err)
@@ -80,7 +82,7 @@ function Post() {
       </div>
         <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
           <div>
-            <label className="white-text">What' new?: 
+            <label className="white-text">Reply: 
             <input
               type={"text"}
               value={content}
@@ -94,4 +96,4 @@ function Post() {
     );
   }
 
-  export default Post;
+  export default EachPost;

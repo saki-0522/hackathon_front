@@ -9,94 +9,62 @@ import { fireAuth } from "../firebase/firebase";
 
 interface UserData {
   name: string;
-  age: number;
+  uid: string;
+  email: string;
+  // age: number;
+}
+
+interface Tweet {
+  tweet_id: string;
+  posted_by: string;
+  posted_at: string;
+  content: string;
 }
 
 function Home() {
-  const [age, setAge] = useState<number>(0);
-  const [name, setName] = useState<string>("");
-  const [userData, setUserData] = useState<UserData[]>([]);
+  const [tweets, setTweet] = useState<Tweet[]>([]);
   const navigate = useNavigate();
-  const user_string = sessionStorage.getItem('user');
-  let user;
-  
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault()
-    if (!name) {
-      alert("Please enter name");
-      return;
-    }
-    
-    if (name.length > 50) {
-      alert("Please enter a name shorter than 50 characters");
-      return;
-    }
-    
-    if (age < 20 || age > 80) {
-      alert("Please enter age between 20 and 80");
-      return;
-    }
-    
+
+  const goToPostPage = () => {
+    navigate('/post');
+  }
+
+  const fetchTweets = async () => {
     try{
-      const response = await fetch(
-        "http://localhost:8000/user",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            age,
-          }),
-        }
-        );
-        if (response.status === 200) {
-          fetchUsers();
-        } else {
-          console.error("POST request failed")
-        }
-        
-        setName("");
-        setAge(0);
-      } catch (err) {
-        console.error(err)
-      }
-    };
-    const fetchUsers = async () => {
-      try{
-        const getResponse = await fetch("http://localhost:8000/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        
-        if (getResponse.status === 200) {
-          // GETリクエストの結果を処理
-          const userData = await getResponse.json();
-          setUserData(userData);
-          // userDataを適切に処理するコードをここに追加
-        } else {
-          // GETリクエストが失敗した場合の処理
-          console.error("GET request failed");
-      }
-    } catch (err) {
-      console.error(err)
+      const getResponse = await fetch("http://localhost:8000/tweet", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (getResponse.status === 200) {
+        // GETリクエストの結果を処理
+        const tweets = await getResponse.json();
+        setTweet(tweets);
+        fetchTweets();
+        // userDataを適切に処理するコードをここに追加
+      } else {
+        // GETリクエストが失敗した場合の処理
+        console.error("GET request failed");
     }
+  } catch (err) {
+    console.error(err)
+  }
   };
   
   useEffect(() => {
-    fetchUsers();
+    fetchTweets();
   },[]);
-  
-  if (user_string) {
-    user = JSON.parse(user_string);
+    
+  let user = sessionStorage.getItem('user');
+  if (user) {
+    user = JSON.parse(user);
   } else {
     navigate('/login');
     return <></>
   }
-  
+
   const signOutWithEmailAndPassword = () => {
     signOut(fireAuth).then(() => {
       sessionStorage.clear();
@@ -105,16 +73,33 @@ function Home() {
     }).catch(err => {
       alert(err);
     });
-  }
+    }
 
   return (
     <div className="App">
-      {user.displayName}
+      <div>
+        <button onClick={goToPostPage}>
+          投稿
+        </button>
+      </div>
+      <div className="user-info">
+        {/* { user.displayName } */}
+      </div>
+      <div className="logout-button">
         <button onClick={signOutWithEmailAndPassword}>
-        ログアウト
-      </button>
+          ログアウト
+        </button>
+      </div>
+      <div>
+        {/* 文字情報をsesstionStrageに入れたい→どうすればいいのかわかんないよねー */}
+        {tweets.map((tweet, index) => (
+          <div key={index} className="txt_2">
+            <p>{tweet.posted_at}, {tweet.content}</p>
+          </div>
+        ))}
+      </div>
     </div>
-    );
-  }
+  );
+}
 
-  export default Home;
+export default Home;

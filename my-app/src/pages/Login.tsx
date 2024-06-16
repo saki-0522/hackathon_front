@@ -15,6 +15,8 @@ const LoginForm: React.FC = () => {
     signInWithEmailAndPassword(auth, email, password).then(async (userCredential: { user: any; }) => {
       // Signed in 
       const user = userCredential.user;
+    
+        console.log(user.uid)
       
       // エラーハンドリング
       const getResponse = await fetch(`http://localhost:8000/user?uid=${user.uid}`, {
@@ -27,6 +29,7 @@ const LoginForm: React.FC = () => {
       if (res.length > 0) {
         sessionStorage.setItem('user', JSON.stringify({...user, displayName: res[0].name}));
         displayName = res[0].name;
+        
       }else{
         throw new Error()
       }
