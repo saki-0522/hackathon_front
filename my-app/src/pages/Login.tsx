@@ -5,6 +5,7 @@ import { fireAuth } from "../firebase/firebase";
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm: React.FC = () => {
+  sessionStorage.clear();
   const [userName, setUserName] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

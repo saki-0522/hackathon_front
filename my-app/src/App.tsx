@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom"
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Post from './pages/Post';
+import EachPost from './pages/Each_Post';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/post" element={<Post />} />
+              <Route path="/eachpost" element={<EachPost />} />
             </Routes>
           </div>
         {/* </Router> */}

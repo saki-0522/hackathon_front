@@ -21,6 +21,37 @@ interface Tweet {
   content: string;
 }
 
+async function Liked(post_id: string, id: string): Promise<void>{
+  let user =sessionStorage.getItem('user');
+    if (user) {
+      let user_ob = JSON.parse(user);
+      id = user_ob.uid;
+    }
+  console.log(id)
+  try {
+    const response = await fetch(
+      "http://localhost:8000/heart",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          post_id,
+          id,
+        }),
+      }
+    );
+    if (response.status === 200) {
+      // fetchUsers();
+    } else {
+      console.error("POST request failed")
+    }
+  } catch (err){
+    console.error(err)
+  }
+}
+
 function Home() {
   const [tweets, setTweet] = useState<Tweet[]>([]);
   const navigate = useNavigate();
@@ -73,7 +104,19 @@ function Home() {
     }).catch(err => {
       alert(err);
     });
+  }
+
+  const goToEachPostPage = (post_id: string, content: string) => {
+    let user =sessionStorage.getItem('user');
+    if (user) {
+      let user_ob = JSON.parse(user);
+      sessionStorage.setItem('posted_by', user_ob.uid);
+      sessionStorage.setItem('displayName', user_ob.displayName);
     }
+    sessionStorage.setItem('post_id', post_id);
+    sessionStorage.setItem('content', content);
+    navigate('/eachpost');
+  }
 
   return (
     <div className="App">
@@ -94,7 +137,12 @@ function Home() {
         {/* 文字情報をsesstionStrageに入れたい→どうすればいいのかわかんないよねー */}
         {tweets.map((tweet, index) => (
           <div key={index} className="txt_2">
-            <p>{tweet.posted_at}, {tweet.content}</p>
+            <button onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}>
+              <p>{tweet.posted_at}, {tweet.content}</p>
+            </button>
+            <button onClick={() => Liked(tweet.tweet_id, tweet.posted_by)}>
+              <p> "♡"</p>
+            </button>
           </div>
         ))}
       </div>
