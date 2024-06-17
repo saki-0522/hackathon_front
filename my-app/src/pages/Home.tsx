@@ -19,6 +19,8 @@ interface Tweet {
   posted_by: string;
   posted_at: string;
   content: string;
+  likes: string;
+  heart: string;
 }
 
 async function Liked(post_id: string, id: string): Promise<void>{
@@ -59,29 +61,35 @@ function Home() {
   const goToPostPage = () => {
     navigate('/post');
   }
+  
 
   const fetchTweets = async () => {
     try{
-      const getResponse = await fetch("http://localhost:8000/tweet", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      
-      if (getResponse.status === 200) {
-        // GETリクエストの結果を処理
-        const tweets = await getResponse.json();
-        setTweet(tweets);
-        fetchTweets();
-        // userDataを適切に処理するコードをここに追加
-      } else {
-        // GETリクエストが失敗した場合の処理
-        console.error("GET request failed");
-    }
-  } catch (err) {
+      let user =sessionStorage.getItem('user');
+      if (user) {
+        let user_ob = JSON.parse(user);
+        const getResponse = await fetch(`http://localhost:8000/tweet?uid=${user_ob.uid}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (getResponse.status === 200) {
+          // GETリクエストの結果を処理
+          const tweets = await getResponse.json();
+          setTweet(tweets);
+          fetchTweets();
+          console.log(tweets);
+          // userDataを適切に処理するコードをここに追加
+        } else {
+          // GETリクエストが失敗した場合の処理
+          console.error("GET request failed");
+        }
+      }
+    } catch (err) {
     console.error(err)
-  }
+    }
   };
   
   useEffect(() => {
