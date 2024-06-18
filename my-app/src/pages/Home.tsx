@@ -19,8 +19,8 @@ interface Tweet {
   posted_by: string;
   posted_at: string;
   content: string;
-  likes: string;
-  heart: string;
+  likes_count: number;
+  status: number;
 }
 
 async function Liked(post_id: string, id: string): Promise<void>{
@@ -29,7 +29,7 @@ async function Liked(post_id: string, id: string): Promise<void>{
       let user_ob = JSON.parse(user);
       id = user_ob.uid;
     }
-  console.log(id)
+  // console.log(id)
   try {
     const response = await fetch(
       "http://localhost:8000/heart",
@@ -80,7 +80,7 @@ function Home() {
           const tweets = await getResponse.json();
           setTweet(tweets);
           fetchTweets();
-          console.log(tweets);
+          // console.log(tweets);
           // userDataを適切に処理するコードをここに追加
         } else {
           // GETリクエストが失敗した場合の処理
@@ -149,7 +149,7 @@ function Home() {
               <p>{tweet.posted_at}, {tweet.content}</p>
             </button>
             <button onClick={() => Liked(tweet.tweet_id, tweet.posted_by)}>
-              <p> "♡"</p>
+              <p>{tweet.status === 1 ? '❤️' : '♡'} {tweet.likes_count}</p>
             </button>
           </div>
         ))}
