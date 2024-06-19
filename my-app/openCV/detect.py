@@ -1,50 +1,59 @@
 import cv2
+import time
 
-def main():
-    # (1) 指定された番号のカメラに対するキャプチャオブジェクトを作成する
-    capture = cv2.VideoCapture(0)
-    
-    # (2) 表示用ウィンドウの初期化
-    cv2.namedWindow("Capture", cv2.WINDOW_AUTOSIZE)
+# ビデオキャプチャの設定
+capture = cv2.VideoCapture(0)
+capture.set(3, 640)  # 幅
+capture.set(4, 360)  # 高さ
 
-    # cascade_name = "/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml"
-    cascade_name = "/usr/share/opencv4/haarcascades/haarcascade_smile.xml"
+# カスケードファイルの読み込み
+face_cascade = cv2.CascadeClassifier('./src/haarcascade_frontalface_default.xml')
+smile_cascade = cv2.CascadeClassifier('./src/haarcascade_smile.xml')
 
-    cascade = cv2.CascadeClassifier(cascade_name)
-    colors = [
-        (0, 0, 255), (0, 128, 255), (0, 255, 255), (0, 255, 0),
-        (255, 128, 0), (255, 255, 0), (255, 0, 0), (255, 0, 255)
-    ]
+# 開始時間の記録
+start_time = time.time()
 
-    while capture.isOpened():
-        # (3) カメラから画像をキャプチャする
-        ret, frame = capture.read()
-        if not ret:
+# 笑顔が検出されている開始時間
+smile_start_time = None
+
+while True:
+    ret, img = capture.read()
+    img = cv2.flip(img, 1)  # 鏡表示にする
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+    smile_detected = False
+    for (x, y, w, h) in faces:
+        cv2.circle(img, (int(x + w / 2), int(y + h / 2)), int(w / 2), (255, 0, 0), 2)  # 青色の円
+
+        roi_gray = gray[y:y + h, x:x + w]  # 顔領域を切り出し
+        smiles = smile_cascade.detectMultiScale(roi_gray, scaleFactor=1.2, minNeighbors=10, minSize=(20, 20))  # 笑顔識別
+        if len(smiles) > 0:
+            smile_detected = True
+            for (sx, sy, sw, sh) in smiles:
+                cv2.circle(img, (int(x + sx + sw / 2), int(y + sy + sh / 2)), int(sw / 2), (0, 0, 255), 2)  # 赤色の円
+
+    if smile_detected:
+        if smile_start_time is None:
+            smile_start_time = time.time()
+        elif time.time() - smile_start_time >= 0.5:
+            print("smile detected")
             break
+    else:
+        smile_start_time = None
 
-        # (3) 読み込んだ画像のグレースケール化，ヒストグラムの均一化を行う
-        src_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.equalizeHist(src_gray, src_gray)
+    cv2.imshow('img', img)
 
-        # (4) 物体（顔）検出.結果はfacesに格納する．
-        faces = cascade.detectMultiScale(src_gray, 1.1, 2, 0 | cv2.CASCADE_SCALE_IMAGE, (40, 40))
+    # 経過時間のチェック
+    if time.time() - start_time > 10:
+        print("time end")
+        break
 
-        # (5) 検出された全ての顔位置に，円を描画する
-        for i, (x, y, w, h) in enumerate(faces):
-            center = (x + w // 2, y + h // 2)
-            radius = (w + h) // 4
-            cv2.circle(frame, center, radius, colors[i % len(colors)], 3, 8, 0)
+    # キー操作
+    key = cv2.waitKey(5)
+    if key == 27:  # escキーで終了
+        break
 
-        # (4) カメラ画像の表示
-        cv2.imshow("Capture", frame)
-
-        # (5) 2msecだけキー入力を待つ
-        c = cv2.waitKey(2)
-        if c == 27:  # Escキー
-            break
-
-    cv2.destroyWindow("Capture")
-    capture.release()
-
-if __name__ == "__main__":
-    main()
+capture.release()
+cv2.destroyAllWindows()
+print("Exit")
