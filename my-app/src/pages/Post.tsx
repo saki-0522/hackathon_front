@@ -61,6 +61,7 @@ function Post() {
           console.error("POST request failed")
         }
         setContent("");
+        navigate('/')
       } else {
         navigate('/login');
         // return <></>
