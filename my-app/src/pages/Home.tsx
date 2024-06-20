@@ -19,20 +19,22 @@ interface Tweet {
   posted_by: string;
   posted_at: string;
   content: string;
-  likes_count: number;
+  like_count: number;
   status: number;
+  display_name: string;
+  parent_id: string;
 }
 
-async function Liked(post_id: string, id: string): Promise<void>{
+async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
   let user =sessionStorage.getItem('user');
-    if (user) {
-      let user_ob = JSON.parse(user);
-      id = user_ob.uid;
-    }
+  if (user) {
+    let user_ob = JSON.parse(user);
+    id = user_ob.uid;
+  }
   // console.log(id)
   try {
     const response = await fetch(
-      "http://localhost:8000/heart",
+      `http://localhost:8000/heart?status=${status}&uid=${id}`,
       {
         method: "POST",
         headers: {
@@ -41,6 +43,7 @@ async function Liked(post_id: string, id: string): Promise<void>{
         body: JSON.stringify({
           post_id,
           id,
+          parent_id,
         }),
       }
     );
@@ -142,14 +145,15 @@ function Home() {
         </button>
       </div>
       <div>
-        {/* 文字情報をsesstionStrageに入れたい→どうすればいいのかわかんないよねー */}
-        {tweets.map((tweet, index) => (
+        {tweets && tweets.length > 0 && tweets.map((tweet, index) => (
           <div key={index} className="txt_2">
             <button onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}>
+              {tweet.parent_id !== "first" && (<p>Parent ID: {tweet.parent_id}</p>)}
+              <p>FROM {tweet.display_name}</p>
               <p>{tweet.posted_at}, {tweet.content}</p>
-            </button>
-            <button onClick={() => Liked(tweet.tweet_id, tweet.posted_by)}>
-              <p>{tweet.status === 1 ? '❤️' : '♡'} {tweet.likes_count}</p>
+              <button onClick={(e) => { e.stopPropagation(); Liked(tweet.tweet_id, tweet.posted_by, tweet.status, tweet.parent_id);}}>
+                <p>{tweet.status === 1 ? '❤️' : '♡'} {tweet.like_count} </p>
+              </button>
             </button>
           </div>
         ))}

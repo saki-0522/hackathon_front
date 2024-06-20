@@ -17,8 +17,6 @@ interface Tweet {
 
 function Post() {
   const [content, setContent] = useState("");
-  // const [name, setName] = useState<string>("");
-  // const [userData, setUserData] = useState<UserData[]>([]);
   const navigate = useNavigate();
 
   const goToHomePage = () => {
@@ -32,15 +30,13 @@ function Post() {
       goToHomePage();
     }
 
-    
-
     try{
       let user =sessionStorage.getItem('user');
       if (user) {
         let user_ob = JSON.parse(user);
         console.log(user_ob);
         let posted_by = user_ob.uid;
-        let displayName = user_ob.displayName;
+        let display_name = user_ob.displayName;
         const response = await fetch(
           "http://localhost:8000/tweet",
           {
@@ -51,7 +47,7 @@ function Post() {
             body: JSON.stringify({
               content,
               posted_by,
-              displayName,
+              display_name,
             }),
           }
         );
