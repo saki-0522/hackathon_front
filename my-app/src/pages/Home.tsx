@@ -25,6 +25,12 @@ interface Tweet {
   parent_id: string;
 }
 
+interface ParentTweet {
+  tweet_id: string;
+  user_id: string;
+  content: string;
+}
+
 async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
   let user =sessionStorage.getItem('user');
   if (user) {
@@ -61,6 +67,7 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
 
 function Home() {
   const [tweets, setTweet] = useState<Tweet[]>([]);
+  const [parents, setParent] = useState<ParentTweet[]>([]);
   const navigate = useNavigate();
 
   const goToPostPage = () => {
@@ -119,6 +126,31 @@ function Home() {
     }).catch(err => {
       alert(err);
     });
+  }
+
+  const getParentContent = async (parent_id: string) => {
+    try{
+        // const getResponse = await fetch(`http://localhost:8000/tweet?uid=${parent_id}`, {
+        const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/tweet?uid=${parent_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
+        if (getResponse.status === 200) {
+          // GETリクエストの結果を処理
+          const parents = await getResponse.json();
+          setParent(parents);
+          getParentContent(parent_id);
+          // userDataを適切に処理するコードをここに追加
+        } else {
+          // GETリクエストが失敗した場合の処理
+          console.error("GET request failed");
+        }
+    } catch (err) {
+    console.error(err)
+    }
   }
 
   const goToEachPostPage = (post_id: string, content: string) => {
