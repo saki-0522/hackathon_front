@@ -34,7 +34,8 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
   // console.log(id)
   try {
     const response = await fetch(
-      `http://localhost:8000/heart?status=${status}&uid=${id}`,
+      // `http://localhost:8000/heart?status=${status}&uid=${id}`,
+      `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
       {
         method: "POST",
         headers: {
@@ -48,6 +49,7 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
       }
     );
     if (response.status === 200) {
+      console.log(status);
       // fetchUsers();
     } else {
       console.error("POST request failed")
@@ -71,7 +73,8 @@ function Home() {
       let user =sessionStorage.getItem('user');
       if (user) {
         let user_ob = JSON.parse(user);
-        const getResponse = await fetch(`http://localhost:8000/tweet?uid=${user_ob.uid}`, {
+        // const getResponse = await fetch(`http://localhost:8000/tweet?uid=${user_ob.uid}`, {
+        const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/tweet?uid=${user_ob.uid}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -97,6 +100,7 @@ function Home() {
   
   useEffect(() => {
     fetchTweets();
+    navigate('/');
   },[]);
     
   let user = sessionStorage.getItem('user');

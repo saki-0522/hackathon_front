@@ -20,7 +20,8 @@ const LoginForm: React.FC = () => {
         console.log(user.uid)
       
       // エラーハンドリング
-      const getResponse = await fetch(`http://localhost:8000/user?uid=${user.uid}`, {
+      // const getResponse = await fetch(`http://localhost:8000/user?uid=${user.uid}`, {
+      const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app//user?uid=${user.uid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +58,7 @@ const LoginForm: React.FC = () => {
       <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
         <label>Email: </label>
         <input
-          type="string"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         ></input>
@@ -65,7 +66,7 @@ const LoginForm: React.FC = () => {
       <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
         <label>Password: </label>
         <input
-          type="string"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></input>

@@ -38,7 +38,8 @@ function Post() {
         let posted_by = user_ob.uid;
         let display_name = user_ob.displayName;
         const response = await fetch(
-          "http://localhost:8000/tweet",
+          // "http://localhost:8000/tweet",
+          "https://hackathon-back-xydruijzdq-uc.a.run.app/tweet",
           {
             method: "POST",
             headers: {

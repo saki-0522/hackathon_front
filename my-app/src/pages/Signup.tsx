@@ -21,7 +21,8 @@ const Signup: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/user', {
+      // const response = await fetch('http://localhost:8000/user', {
+      const response = await fetch('https://hackathon-back-xydruijzdq-uc.a.run.app/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,9 +86,9 @@ const Signup: React.FC = () => {
         ></input>
       </form>
       <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
-        <label>Password: </label>
+        <label>Password (6 characters minimum): </label>
         <input
-          type="string"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></input>

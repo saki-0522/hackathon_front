@@ -31,7 +31,6 @@ interface Reply {
 
 async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
     let user =sessionStorage.getItem('user');
-    console.log(post_id, id, status, parent_id);
     if (user) {
         let user_ob = JSON.parse(user);
         id = user_ob.uid;
@@ -39,17 +38,18 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
     console.log(status)
     try {
     const response = await fetch(
-        `http://localhost:8000/heart?status=${status}&uid=${id}`,
+        // `http://localhost:8000/heart?status=${status}&uid=${id}`,
+        `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
         {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            post_id,
-            id,
-            parent_id,
-        }),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                post_id,
+                id,
+                parent_id,
+            }),
         }
     );
     if (response.status === 200) {
@@ -92,7 +92,7 @@ function EachPost() {
         let posted_by = user_ob.uid;
         let display_name = user_ob.displayName;
         const response = await fetch(
-          "http://localhost:8000/reply",
+          "https://hackathon-back-xydruijzdq-uc.a.run.app/reply",
           {
             method: "POST",
             headers: {
@@ -139,6 +139,7 @@ function EachPost() {
     //     try {
     //     const response = await fetch(
     //         `http://localhost:8000/heart?status=${status}&uid=${id}`,
+    //         `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
     //         {
     //         method: "POST",
     //         headers: {
@@ -164,7 +165,8 @@ function EachPost() {
     const fetchReply = async () => {
         try{
         // console.log(parent_id)
-        const getResponse = await fetch(`http://localhost:8000/reply?parent_id=${parent_id}`, {
+        // const getResponse = await fetch(`http://localhost:8000/reply?parent_id=${parent_id}`, {
+        const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/reply?parent_id=${parent_id}`, {
             method: "GET",
             headers: {
             "Content-Type": "application/json",
@@ -187,7 +189,16 @@ function EachPost() {
 
   useEffect(() => {
     fetchReply();
+    navigate('/eachpost')
   },[]);
+
+  let user = sessionStorage.getItem('user');
+  if (user) {
+    user = JSON.parse(user);
+  } else {
+    navigate('/login');
+    return <></>
+  }
 
   return (
     <div className="App">
