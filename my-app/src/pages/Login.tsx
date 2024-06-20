@@ -21,12 +21,13 @@ const LoginForm: React.FC = () => {
       
       // エラーハンドリング
       // const getResponse = await fetch(`http://localhost:8000/user?uid=${user.uid}`, {
-      const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app//user?uid=${user.uid}`, {
+      const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/user?uid=${user.uid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         }})
         const res = await getResponse.json();
+        console.log(res);
         let displayName = "";
       if (res.length > 0) {
         sessionStorage.setItem('user', JSON.stringify({...user, displayName: res[0].name}));
