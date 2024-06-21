@@ -42,8 +42,9 @@
 /* タイプパスワードにする */
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  /* background-color: #282c34; */
+  /* min-height: 100vh; */
+  height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,4 +113,61 @@
   margin-right: auto;
   line-height:50px;
   color: #0F3249;
+}
+
+.BottomBar{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    transition: transform 300ms ease 0s;
+    transform: translateY(0px);
+}
+
+/* 通常のスタイル */
+body {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* ダークモード用のスタイル */
+@media (prefers-color-scheme: dark) {
+  body {
+      background-color: #1a1a1a;
+      color: #cccccc;
+  }
+}
+
+
+.twitter__container {
+  padding: 0;
+  background: #ffffff;
+  overflow: hidden;
+  max-width: 400px;
+  margin: 20px auto;
+  font-size: 80%;
+  border: solid 1px #eeeeee;
+}
+
+.Menu {
+  display: flex;
+}
+
+.item {
+  margin-right: 10px;
+  padding: 10px;
+  border-right: 1px solid #ccc; /* 右側に区切り線を設定 */
+}
+
+.item:last-child {
+  border-right: none; /* 最後のアイテムには区切り線を表示しない */
+}
+
+.EachPost {
+  display: flex;
+  flex-direction: column;
+}
+
+.under {
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* 下に線を引く */
 }

@@ -1,0 +1,139 @@
+.page {
+    align-items: center;
+    justify-content: center;
+    width: 570px;
+}
+
+.text {
+    text-align: left;
+}
+
+.button {
+    font-weight: bold;
+    font-size: 50;
+    width: 6cm;
+    border-radius: 999px;
+    padding: auto;
+    height: 45px;
+}
+
+.create {
+    background-color: #1DA1F2;
+    color: aliceblue;
+}
+
+.signin {
+    color: #1DA1F2;
+    font-weight: bold;
+    font-size: 50;
+    width: 6cm;
+    border-radius: 999px;
+    padding: auto;
+    height: 45px;
+}
+
+.button2 {
+    border: none;
+    font-weight: bold;
+    font-size: 25px;
+    background-color: transparent;
+
+}
+
+@media (prefers-color-scheme: dark) {
+    .button2 {
+        color: #cccccc;
+    }
+}
+
+.put {
+    display: flex;
+}
+
+.button3 {
+    font-weight: bold;
+    font-size: 20px;
+    width: 2.5cm;
+    border-radius: 999px;
+    padding: auto;
+    height: 45px;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.trans {
+    background-color: transparent;
+}
+
+.text1 {
+    color: white;
+}
+
+.circular-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 半径の50%で円形にする */
+    overflow: hidden; /* 余分な部分を隠す */
+}
+
+.circular-image img {
+    width: 100%; /* 画像の幅を親要素に合わせる */
+    height: auto; /* 高さは自動調整 */
+}
+
+.item1 {
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.item2 {
+
+    flex: 1;
+    /* 各アイテムに同じ高さを強制する */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* align-items: center; */
+    /* この部分は必要に応じて調整できます */
+    /* min-height: 100px; */
+    /* margin: 10px; */
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+
+}
+
+
+.text3 {
+    font-size: 30px;
+}
+
+.reply {
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.tweet {
+    display: flex;
+    flex-direction: column;
+}
+
+.inside-tweet {
+    display: flex;
+}
+
+
+.twitter__container {
+    padding: 0;
+    background: #ffffff;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 20px auto;
+    font-size: 80%;
+    border: solid 1px #eeeeee;
+  }

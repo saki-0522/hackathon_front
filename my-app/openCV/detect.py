@@ -36,7 +36,7 @@ while True:
     if smile_detected:
         if smile_start_time is None:
             smile_start_time = time.time()
-        elif time.time() - smile_start_time >= 0.5:
+        elif time.time() - smile_start_time >= 2:
             print("smile detected")
             break
     else:

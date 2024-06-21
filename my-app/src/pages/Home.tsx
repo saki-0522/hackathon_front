@@ -69,6 +69,7 @@ function Home() {
   const [tweets, setTweet] = useState<Tweet[]>([]);
   const [parents, setParent] = useState<ParentTweet[]>([]);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const goToPostPage = () => {
     navigate('/post');
@@ -165,6 +166,29 @@ function Home() {
     navigate('/eachpost');
   }
 
+  const handleSearch = async () => {
+    try {
+      let user = sessionStorage.getItem('user');
+      if (user) {
+        const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/tweet/search?search=${searchTerm}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (getResponse.status === 200) {
+          const tweets = await getResponse.json();
+          setTweet(tweets);
+        } else {
+          console.error("GET request failed");
+        }
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  };
+
   return (
     <div className="App">
       <div>
@@ -179,6 +203,12 @@ function Home() {
         <button onClick={signOutWithEmailAndPassword}>
           ログアウト
         </button>
+        <div>
+        <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="検索キーワードを入力" />
+        <button onClick={handleSearch}>
+          検索
+        </button>
+      </div>
       </div>
       <div>
         {tweets && tweets.length > 0 && tweets.map((tweet, index) => (
@@ -194,7 +224,9 @@ function Home() {
           </div>
         ))}
       </div>
+      
     </div>
+    
   );
 }
 
