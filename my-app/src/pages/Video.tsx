@@ -127,6 +127,7 @@ const VideoStream = () => {
             console.log('Response from backend:', responseData);
             if (responseData.smile_detected)
             {
+                closeCamera();
                 navigate('/');
             }
         } catch (err) {
