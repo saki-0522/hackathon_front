@@ -36,7 +36,6 @@ function App() {
           <Route path="/eachpost" element={<EachPost />} />
           <Route path="/first" element={<First />} />
           <Route path="/video" element={<VideoStream />} />
-          {/* <Route path="/login/test" element={<Logintmp />} /> */}
         </Routes>
       </div>
 
