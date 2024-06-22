@@ -115,12 +115,23 @@
   color: #0F3249;
 }
 
-.BottomBar{
+/* .BottomBar{
     position: fixed;
     bottom: 0px;
     width: 100%;
     transition: transform 300ms ease 0s;
     transform: translateY(0px);
+} */
+
+.BottomBar {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 10px 0;
+  transition: transform 300ms ease 0s;
+  transform: translateY(0px);
+  /* フレックスボックスでボトムバーをページの一番下に配置します */
+  margin-top: auto;
 }
 
 /* 通常のスタイル */
@@ -170,4 +181,19 @@ body {
 .under {
   padding: 10px;
   border-bottom: 1px solid #ccc; /* 下に線を引く */
+}
+
+.disabled-button {
+  opacity: 0.5;
+}
+
+
+.reply-content {
+  color: #0F3249;
+}
+
+@media (prefers-color-scheme: dark) {
+  .reply-content {
+      color: #cccccc;
+  }
 }

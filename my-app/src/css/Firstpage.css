@@ -85,6 +85,7 @@
 .circular-image img {
     width: 100%; /* 画像の幅を親要素に合わせる */
     height: auto; /* 高さは自動調整 */
+    border-radius: 50%;
 }
 
 .item1 {

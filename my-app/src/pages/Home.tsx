@@ -1,11 +1,17 @@
 import React from "react";
 import "../App.css";
+import "../css/Eachpost.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { fireAuth } from "../firebase/firebase";
-
+import { Box, Card, CardContent, CardActions, Button, Typography, IconButton, Container } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import HomeIcon from '@mui/icons-material/Home';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 interface UserData {
   name: string;
@@ -40,8 +46,8 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
   // console.log(id)
   try {
     const response = await fetch(
-      // `http://localhost:8000/heart?status=${status}&uid=${id}`,
       `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
+      // `http://localhost:8000/heart?status=${status}&uid=${id}`,
       {
         method: "POST",
         headers: {
@@ -81,7 +87,6 @@ function Home() {
       let user =sessionStorage.getItem('user');
       if (user) {
         let user_ob = JSON.parse(user);
-        // const getResponse = await fetch(`http://localhost:8000/tweet?uid=${user_ob.uid}`, {
         const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/tweet?uid=${user_ob.uid}`, {
           method: "GET",
           headers: {
@@ -128,6 +133,14 @@ function Home() {
       alert(err);
     });
   }
+  
+  const PostButton = () => {
+    return (
+      <IconButton color="primary" aria-label="home" onClick={goToPostPage}>
+        <PostAddIcon />
+      </IconButton>
+    );
+  };
 
   const getParentContent = async (parent_id: string) => {
     try{
@@ -189,44 +202,94 @@ function Home() {
     }
   };
 
+  const goToPhotoPage = (post_id: string, id: string, parent_id: string) => {
+    sessionStorage.setItem('post_id', post_id);
+    sessionStorage.setItem('id', id);
+    sessionStorage.setItem('parent_id', parent_id);
+    navigate('/video');
+  }
+
   return (
-    <div className="App">
-      <div>
-        <button onClick={goToPostPage}>
-          投稿
-        </button>
-      </div>
-      <div className="user-info">
-        {/* { user.displayName } */}
-      </div>
-      <div className="logout-button">
-        <button onClick={signOutWithEmailAndPassword}>
-          ログアウト
-        </button>
-        <div>
-        <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="検索キーワードを入力" />
-        <button onClick={handleSearch}>
-          検索
-        </button>
-      </div>
-      </div>
-      <div>
-        {tweets && tweets.length > 0 && tweets.map((tweet, index) => (
-          <div key={index} className="txt_2">
-            <button onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}>
-              {tweet.parent_id !== "first" && (<p>Parent ID: {tweet.parent_id}</p>)}
-              <p>FROM {tweet.display_name}</p>
-              <p>{tweet.posted_at}, {tweet.content}</p>
-              <button onClick={(e) => { e.stopPropagation(); Liked(tweet.tweet_id, tweet.posted_by, tweet.status, tweet.parent_id);}}>
-                <p>{tweet.status === 1 ? '❤️' : '♡'} {tweet.like_count} </p>
-              </button>
+    // <div className="App">
+    //   <div>
+    //     <button onClick={goToPostPage}>
+    //       投稿
+    //     </button>
+    //   </div>
+    //   <div className="logout-button">
+    //     <button onClick={signOutWithEmailAndPassword}>
+    //       ログアウト
+    //     </button>
+    //     <div>
+    //     <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="検索キーワードを入力" />
+    //     <button onClick={handleSearch}>
+    //       検索
+    //     </button>
+    //   </div>
+    //   </div>
+    <div className="container">
+      <div className="menu">
+        <div className="item">
+          <div className="put">
+          </div>
+          <div>
+            <PostButton />
+            <button onClick={goToPostPage} className="button2">
+              POST
             </button>
           </div>
-        ))}
+        </div>
       </div>
-      
+      <div className="content">
+        <div className="item">
+          <div className="EachPost">
+            <div className="under">
+              <p className="text3 left-align">
+              </p>
+            </div>
+          </div>
+      <Box>
+        {tweets && tweets.length > 0 && tweets.map((tweet, index) => (
+          <Card key={index} sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="body1">
+                FROM {tweet.display_name}
+              </Typography>
+              <Typography 
+                variant="body1"
+                component="span"
+                onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}
+                // sx={{ cursor: 'pointer', textDecoration: 'underline', color: 'primary.main' }}
+                sx={{ cursor: 'pointer', color: 'primary.main' }}
+              >
+                {tweet.content}
+              </Typography>
+            </CardContent>
+            <CardActions disableSpacing sx={{ justifyContent: 'center' }}>
+              <IconButton  
+                onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}
+              >
+                {<ChatBubbleIcon />}
+              </IconButton>
+              <IconButton 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  goToPhotoPage(tweet.tweet_id, tweet.posted_by, tweet.parent_id);
+                  Liked(tweet.tweet_id, tweet.posted_by, tweet.status, tweet.parent_id);
+                }}
+              >
+                {tweet.status === 1 ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+                <Typography variant="body2" sx={{ ml: 1 }}>
+                  {tweet.like_count}
+                </Typography>
+              </IconButton>
+            </CardActions>
+          </Card>
+        ))}
+      </Box>
+      </div>
+      </div>
     </div>
-    
   );
 }
 

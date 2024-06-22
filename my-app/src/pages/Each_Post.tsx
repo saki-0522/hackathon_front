@@ -1,16 +1,20 @@
 import React from "react";
-import "../App.css";
+import "../css/Eachpost.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { fireAuth } from "../firebase/firebase";
 import { convertToObject } from "typescript";
-import MenuBar from './MenuBar';
 import logo from '../logo/account.svg';
 import { AppBar, Toolbar, IconButton, Typography, Container } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { Box, Card, CardContent, CardActions, Button } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+
 
 interface UserData {
   name: string;
@@ -30,16 +34,6 @@ interface Reply {
     parent_id: string;
 }
 
-
-
-// interface ReplyTweetGet {
-//     display_name: string;
-//     reply_content: string;
-//     time: string;
-// }
-
-
-
 async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
     let user =sessionStorage.getItem('user');
     if (user) {
@@ -47,10 +41,14 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
         id = user_ob.uid;
     }
     console.log(status)
+    console.log(post_id)
+    console.log(id)
+    console.log(parent_id)
     try {
     const response = await fetch(
         // `http://localhost:8000/heart?status=${status}&uid=${id}`,
         `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
+        // `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=0&uid=${id}`,
         {
             method: "POST",
             headers: {
@@ -61,6 +59,7 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
                 id,
                 parent_id,
             }),
+            
         }
     );
     if (response.status === 200) {
@@ -98,10 +97,26 @@ function EachPost() {
     navigate('/post');
   }
 
+  const goToPhotoPage = () => {
+    sessionStorage.removeItem('content');
+    sessionStorage.removeItem('post_id');
+    sessionStorage.removeItem('posted_by');
+    sessionStorage.removeItem('displayName');
+    navigate('/video');
+  }
+
   const HomeButton = () => {
     return (
       <IconButton color="primary" aria-label="home" onClick={goToHomePage}>
         <HomeIcon />
+      </IconButton>
+    );
+  };
+
+  const PostButton = () => {
+    return (
+      <IconButton color="primary" aria-label="home" onClick={goToPostPage}>
+        <PostAddIcon />
       </IconButton>
     );
   };
@@ -157,40 +172,6 @@ function EachPost() {
     window.location.reload();
   }
 
-
-    // async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
-    //     let user =sessionStorage.getItem('user');
-    //     if (user) {
-    //         let user_ob = JSON.parse(user);
-    //         id = user_ob.uid;
-    //     }
-    //     // console.log(id)
-    //     try {
-    //     const response = await fetch(
-    //         `http://localhost:8000/heart?status=${status}&uid=${id}`,
-    //         `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
-    //         {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             post_id,
-    //             id,
-    //             parent_id,
-    //         }),
-    //         }
-    //     );
-    //     if (response.status === 200) {
-    //         // fetchUsers();
-    //     } else {
-    //         console.error("POST request failed")
-    //     }
-    //     } catch (err){
-    //     console.error(err)
-    //     }
-    // }
-
     const fetchReply = async () => {
         var user_id;
         let user =sessionStorage.getItem('user');
@@ -199,8 +180,6 @@ function EachPost() {
             user_id = user_ob.uid;
         }
         try{
-        // console.log(parent_id)
-        // const getResponse = await fetch(`http://localhost:8000/reply?parent_id=${parent_id}&uid=${user_id}`, {
         const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/reply?parent_id=${parent_id}&uid=${user_id}`, {
             method: "GET",
             headers: {
@@ -224,8 +203,12 @@ function EachPost() {
   };
 
   useEffect(() => {
-    fetchReply();
-    navigate('/eachpost')
+    const timer = setTimeout (() => {
+      fetchReply();
+      navigate('/eachpost')
+    }, 1000);
+    return () => 
+    clearTimeout(timer);
   },[]);
 
   let user = sessionStorage.getItem('user');
@@ -236,95 +219,120 @@ function EachPost() {
     return <></>
   }
 
+  const isFormValid = content !== '';
+
   return (
-    // <div className="twitter__block">
-    //   <figure>
-    //     <img src="icon.png" />
-    //   </figure>
-    //   <div className="twitter__block-text">
-    //     <div className="name">うさきち<span className="name_reply">@usa_tan</span></div>
-    //     <div className="date">1時間前</div>
-    //     <div className="text">
-    //       残業でお腹空いたから朝までやってるお店でラーメン食べることにした(^o^)神の食べ物すぎる・・うまぁ
-    //       <div className="in-pict">
-    //         {/* <img src="sample.jpg"> */}
-    //       </div>
-    //     </div>
-    //     <div className="twitter__icon">
-    //       <span className="twitter-bubble">1</span>
-    //       <span className="twitter-loop">4</span>
-    //       <span className="twitter-heart">122</span>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className="Menu">
-      <div className="item">
-        {/* <MenuBar onSignOut={goToHomePage} /> */}
-        <div className="put "><Container className="item2">
-            <HomeButton />
-          <button onClick={goToHomePage} className="button2 item2">
-              HOME
-          </button>
-          </Container>
-        </div>
-        <div>
-          <button onClick={goToPostPage} className="button2">
+    <div className="container">
+      <div className="menu">
+        <div className="item">
+          <div className="put">
+            <Container className="item2">
+              <HomeButton />
+              <button onClick={goToHomePage} className="button2 item2">
+                HOME
+              </button>
+            </Container>
+          </div>
+          <div>
+            <PostButton />
+            <button onClick={goToPostPage} className="button2">
               POST
-          </button>
+            </button>
+          </div>
         </div>
       </div>
-      <div className="item">
-        <div className="EachPost">
-          <div className="under">
-            <p className="text3 left-align">
-                { initialPost }
-            </p>
-          </div>
-
-          </div>
-            <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
-                <div className="put">
-                  <div className="item1">
-                    <img src={logo} className="circular-image" alt="logo" />
-                  </div>
-                  <div>
-                    <label>
-                    <input
-                        className="reply"
-                        type={"text"}
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        style={{ backgroundColor: 'inherit', border: 'none', color: 'white',}}
-                        onBlur={() => {
-                          if (content === '') {
-                            setFlag(true);}
-                          }}
-                        placeholder={flag ? 'Post your reply' : ''}
-                        ></input></label>
-                    </div>
-                    <div className=".right-align">
-                      {/* {!flag && ( */}
-                          <button type="submit" className="button3 create">Reply</button>
-                      {/* )} */}
-                      {/* <button type={"submit"} className="button3 create">Reply</button> */}
-                    </div>
-                  </div>
-            </form>
-            <div className="tweet">
-              {replies && replies.length > 0 && replies.map((reply, index) => (
-                <div key={index} className="txt_2">
-                  <button onClick={() => goToEachPostPage(reply.tweet_id, reply.content)} className="inside-tweet">
-                  <p>{reply.display_name} {reply.content}</p>
-                  </button>
-                  <button onClick={() => Liked(reply.tweet_id, reply.posted_by, reply.status, reply.parent_id)} className="inside-tweet">
-                      <p>{reply.status === 1 ? '❤️' : '♡'} {reply.like_count}</p>
-                  </button>
-              </div>
-              ))}
+      <div className="content">
+        <div className="item">
+          <div className="EachPost">
+            <div className="under">
+              <p className="text3 left-align">
+                {initialPost}
+              </p>
             </div>
           </div>
+          <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
+            <div className="put">
+              <div className="item1">
+                <img src={logo} className="circular-image" alt="logo" />
+              </div>
+              <div>
+                <label>
+                  <input
+                    className="reply reply-content"
+                    type={"text"}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    style={{ backgroundColor: 'inherit', border: 'none', fontSize: '20px' }}
+                    onBlur={() => {
+                      if (content === '') {
+                        setFlag(true);
+                      }
+                    }}
+                    placeholder="投稿内容を入力"
+                  ></input>
+                </label>
+              </div>
+              <div className="right-align">
+                <button
+                  type="submit"
+                  className={`reply create ${!isFormValid ? 'disabled-button' : ''} button3`}
+                  disabled={!isFormValid}
+                >
+                  Reply
+                </button>
+              </div>
+            </div>
+          </form>
+          <Box>
+            {replies && replies.length > 0 && replies.map((reply, index) => (
+              <Card key={index} sx={{ mb: 2 }}>
+                <CardContent>
+                  <Typography variant="body1">
+                    FROM {reply.display_name}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    component="span"
+                    onClick={() => goToEachPostPage(reply.tweet_id, reply.content)}
+                    sx={{ cursor: 'pointer', color: 'primary.main' }}
+                  >
+                    {reply.content}
+                  </Typography>
+                </CardContent>
+                <CardActions disableSpacing sx={{ justifyContent: 'center' }}>
+                  <IconButton onClick={() => goToEachPostPage(reply.tweet_id, reply.content)}>
+                    {<ChatBubbleIcon />}
+                  </IconButton>
+                  {/* <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      goToPhotoPage();
+                      Liked(reply.tweet_id, reply.posted_by, reply.status, reply.parent_id);
+                    }}
+                    
+                  > */}
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation(); // イベントのバブリングを停止する
+                      if (reply.status === 1) {
+                        goToPhotoPage(); // statusが1の場合、goToPhotoPage関数を呼び出す
+                      } else {
+                        Liked(reply.tweet_id, reply.posted_by, reply.status, reply.parent_id); // それ以外の場合、Liked関数を呼び出す
+                      }
+                    }}
+                  >
+                    {reply.status === 1 ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+                    <Typography variant="body2" sx={{ ml: 1 }}>
+                      {reply.like_count}
+                    </Typography>
+                  </IconButton>
+                </CardActions>
+              </Card>
+            ))}
+          </Box>
         </div>
-    // </div>
+      </div>
+    </div>
     );
   }
 

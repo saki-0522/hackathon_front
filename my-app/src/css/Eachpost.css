@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .menu {
+    flex: 0 0 30%;
+    background-color: #f0f0f0; /* Optional: To differentiate the menu area */
+  }
+  
+  .content {
+    flex: 1; /* Takes the remaining space which is 70% */
+    padding: 20px;
+  }
+  
+  .item {
+    margin-bottom: 20px;
+  }
+  
+  .put {
+    display: flex;
+    align-items: center;
+  }
+  
+  .button2 {
+    margin-left: 10px;
+  }
+  
+  .button3 {
+    background-color: #1DA1F2;
+    color:white;
+    font-weight: bold;
+    font-size: 20px;
+    width: 2.5cm;
+    border-radius: 999px;
+    padding: auto;
+    height: 45px;
+    border: none;
+}
+
+  .circular-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  .reply-content {
+    width: 100%;
+  }
+  
+  .disabled-button {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .right-align {
+    margin-left: auto;
+  }
+  
+
+  .text3 {
+    font-size: 20px;
+  }
+
+  .margin {
+    
+  }
