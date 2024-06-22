@@ -120,7 +120,8 @@ function Home() {
   if (user) {
     user = JSON.parse(user);
   } else {
-    navigate('/login');
+    // navigate('/login');
+    navigate('/first');
     return <></>
   }
 
