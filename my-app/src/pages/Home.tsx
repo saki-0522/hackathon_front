@@ -250,7 +250,7 @@ function Home() {
             </div>
           </div>
       <Box>
-        {tweets && tweets.length > 0 && tweets.map((tweet, index) => (
+        {tweets && tweets.length > 0 && tweets.slice().reverse().map((tweet, index) => (
           <Card key={index} sx={{ mb: 2 }}>
             <CardContent>
               <Typography variant="body1">

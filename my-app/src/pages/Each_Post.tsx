@@ -135,7 +135,6 @@ function EachPost() {
         let posted_by = user_ob.uid;
         let display_name = user_ob.displayName;
         const response = await fetch(
-        //   "http://localhost:8000/reply",
           "https://hackathon-back-xydruijzdq-uc.a.run.app/reply",
           {
             method: "POST",
@@ -150,6 +149,11 @@ function EachPost() {
             }),
           }
         );
+        console.log(content)
+        console.log(posted_by)
+        console.log(parent_id)
+        console.log(display_name)
+        console.log(response)
         if (response.status === 200) {
           // fetchUsers();
         } else {
@@ -186,12 +190,12 @@ function EachPost() {
             "Content-Type": "application/json",
             },
       });
-    
+
         if (getResponse.status === 200) {
             // GETリクエストの結果を処理
             const replies = await getResponse.json();
             setReplyTweetGet(replies);
-            fetchReply();
+            // fetchReply();
             // userDataを適切に処理するコードをここに追加
         } else {
             // GETリクエストが失敗した場合の処理
@@ -284,7 +288,7 @@ function EachPost() {
             </div>
           </form>
           <Box>
-            {replies && replies.length > 0 && replies.map((reply, index) => (
+            {replies && replies.length > 0 && replies.slice().reverse().map((reply, index) => (
               <Card key={index} sx={{ mb: 2 }}>
                 <CardContent>
                   <Typography variant="body1">
@@ -303,14 +307,6 @@ function EachPost() {
                   <IconButton onClick={() => goToEachPostPage(reply.tweet_id, reply.content)}>
                     {<ChatBubbleIcon />}
                   </IconButton>
-                  {/* <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      goToPhotoPage();
-                      Liked(reply.tweet_id, reply.posted_by, reply.status, reply.parent_id);
-                    }}
-                    
-                  > */}
                   <IconButton
                     onClick={(e) => {
                       e.stopPropagation(); // イベントのバブリングを停止する
