@@ -152,7 +152,7 @@ const VideoStream = () => {
     return (
         <div>
             <h1>Camera App</h1>
-            <p>Be Smile</p>
+            <p>SMILE!!</p>
                 <Container className="item2">
                     <HomeButton />
                 </Container>
