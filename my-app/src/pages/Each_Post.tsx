@@ -36,19 +36,15 @@ interface Reply {
 
 async function Liked(post_id: string, id: string, status: number, parent_id: string): Promise<void>{
     let user =sessionStorage.getItem('user');
+    console.log(status);
     if (user) {
         let user_ob = JSON.parse(user);
         id = user_ob.uid;
     }
-    console.log(status)
-    console.log(post_id)
-    console.log(id)
-    console.log(parent_id)
+    console.log(status);
     try {
     const response = await fetch(
-        // `http://localhost:8000/heart?status=${status}&uid=${id}`,
         `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
-        // `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=0&uid=${id}`,
         {
             method: "POST",
             headers: {
@@ -64,6 +60,7 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
     );
     if (response.status === 200) {
         // fetchUsers();
+        window.location.reload();
     } else {
         console.error("POST request failed")
     }
@@ -98,6 +95,7 @@ function EachPost() {
   }
 
   const goToPhotoPage = () => {
+    console.log("test");
     sessionStorage.removeItem('content');
     sessionStorage.removeItem('post_id');
     sessionStorage.removeItem('posted_by');
@@ -149,11 +147,6 @@ function EachPost() {
             }),
           }
         );
-        console.log(content)
-        console.log(posted_by)
-        console.log(parent_id)
-        console.log(display_name)
-        console.log(response)
         if (response.status === 200) {
           // fetchUsers();
         } else {
@@ -310,11 +303,11 @@ function EachPost() {
                   <IconButton
                     onClick={(e) => {
                       e.stopPropagation(); // イベントのバブリングを停止する
-                      if (reply.status === 1) {
+                      // if (reply.status === 0) {
                         goToPhotoPage(); // statusが1の場合、goToPhotoPage関数を呼び出す
-                      } else {
+                      // } else {
                         Liked(reply.tweet_id, reply.posted_by, reply.status, reply.parent_id); // それ以外の場合、Liked関数を呼び出す
-                      }
+                      // }
                     }}
                   >
                     {reply.status === 1 ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}

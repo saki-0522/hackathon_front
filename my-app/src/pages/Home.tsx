@@ -1,6 +1,6 @@
 import React from "react";
-import "../App.css";
-import "../css/Eachpost.css";
+// import "../App.css";
+import "../css/Home.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
@@ -45,6 +45,7 @@ async function Liked(post_id: string, id: string, status: number, parent_id: str
   }
   // console.log(id)
   try {
+    console.log(status);
     const response = await fetch(
       `https://hackathon-back-xydruijzdq-uc.a.run.app/heart?status=${status}&uid=${id}`,
       // `http://localhost:8000/heart?status=${status}&uid=${id}`,
@@ -95,14 +96,10 @@ function Home() {
         });
         
         if (getResponse.status === 200) {
-          // GETリクエストの結果を処理
           const tweets = await getResponse.json();
           setTweet(tweets);
           fetchTweets();
-          // console.log(tweets);
-          // userDataを適切に処理するコードをここに追加
         } else {
-          // GETリクエストが失敗した場合の処理
           console.error("GET request failed");
         }
       }
@@ -120,7 +117,6 @@ function Home() {
   if (user) {
     user = JSON.parse(user);
   } else {
-    // navigate('/login');
     navigate('/first');
     return <></>
   }
@@ -145,7 +141,6 @@ function Home() {
 
   const getParentContent = async (parent_id: string) => {
     try{
-        // const getResponse = await fetch(`http://localhost:8000/tweet?uid=${parent_id}`, {
         const getResponse = await fetch(`https://hackathon-back-xydruijzdq-uc.a.run.app/tweet?uid=${parent_id}`, {
           method: "GET",
           headers: {
@@ -154,13 +149,10 @@ function Home() {
         });
         
         if (getResponse.status === 200) {
-          // GETリクエストの結果を処理
           const parents = await getResponse.json();
           setParent(parents);
           getParentContent(parent_id);
-          // userDataを適切に処理するコードをここに追加
         } else {
-          // GETリクエストが失敗した場合の処理
           console.error("GET request failed");
         }
     } catch (err) {
@@ -211,23 +203,6 @@ function Home() {
   }
 
   return (
-    // <div className="App">
-    //   <div>
-    //     <button onClick={goToPostPage}>
-    //       投稿
-    //     </button>
-    //   </div>
-    //   <div className="logout-button">
-    //     <button onClick={signOutWithEmailAndPassword}>
-    //       ログアウト
-    //     </button>
-    //     <div>
-    //     <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="検索キーワードを入力" />
-    //     <button onClick={handleSearch}>
-    //       検索
-    //     </button>
-    //   </div>
-    //   </div>
     <div className="container">
       <div className="menu">
         <div className="item">
@@ -291,6 +266,62 @@ function Home() {
       </div>
       </div>
     </div>
+    // <div className="container">
+    //   <div className="menu">
+    //     <div className="item">
+    //       <div className="put">
+    //         {/* Placeholder for any profile or user information */}
+    //       </div>
+    //       <div className="post-button-container">
+    //         <PostButton />
+    //         Post
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div className="content">
+    //     {tweets && tweets.length > 0 && (
+    //       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    //         {tweets.slice().reverse().map((tweet, index) => (
+    //           <Card key={index} className="tweet-card">
+    //             <CardContent>
+    //               <Typography variant="body1" className="tweet-from">
+    //                 FROM {tweet.display_name}
+    //               </Typography>
+    //               <Typography 
+    //                 variant="body1"
+    //                 onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}
+    //                 className="tweet-content"
+    //               >
+    //                 {tweet.content}
+    //               </Typography>
+    //             </CardContent>
+    //             <CardActions disableSpacing className="tweet-actions">
+    //               <IconButton  
+    //                 onClick={() => goToEachPostPage(tweet.tweet_id, tweet.content)}
+    //                 className="tweet-action-icon"
+    //               >
+    //                 <ChatBubbleIcon />
+    //               </IconButton>
+    //               <IconButton 
+    //                 onClick={(e) => { 
+    //                   e.stopPropagation(); 
+    //                   goToPhotoPage(tweet.tweet_id, tweet.posted_by, tweet.parent_id);
+    //                   Liked(tweet.tweet_id, tweet.posted_by, tweet.status, tweet.parent_id);
+    //                 }}
+    //                 className="tweet-action-icon"
+    //               >
+    //                 {tweet.status === 1 ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
+    //                 <Typography variant="body2" className="tweet-like-count">
+    //                   {tweet.like_count}
+    //                 </Typography>
+    //               </IconButton>
+    //             </CardActions>
+    //           </Card>
+    //         ))}
+    //       </Box>
+    //     )}
+    //   </div>
+    // </div>
   );
 }
 

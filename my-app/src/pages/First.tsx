@@ -1,14 +1,7 @@
 import React from "react";
 import "../App.css";
-import { Typography } from '@mui/material';
-import ReactDOM from 'react-dom';
-import Signup from "./Signup";
-import { useState } from "react";
-import { useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
-import { fireAuth } from "../firebase/firebase";
-import { convertToObject } from "typescript";
 import { Portal, Paper } from '@mui/material';
 import styled from '@emotion/styled';
 
@@ -135,7 +128,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh; /* 画面全体の高さを使用 */
-  background-color: #f0f0f0; /* 背景色を追加 */
+  background-color: white; /* 背景色を追加 */
 `;
 
 export default First;

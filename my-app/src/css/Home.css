@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .menu {
+    width: 30%; /* メニューバーの幅を全体の20%に設定 */
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .content {
+    width: 60%; /* 投稿画面の幅を全体の60%に設定 */
+    margin-left: 20px; /* メニューバーとの間隔を設定 */
+  }
+  
+  .item {
+    margin-bottom: 20px;
+  }
+  
+  .put {
+    /* Placeholder for profile picture or user information */
+  }
+  
+  .post-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .button2 {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .tweet-card {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+  }
+  
+  .tweet-from {
+    font-weight: bold;
+  }
+  
+  .tweet-content {
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .tweet-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  .tweet-action-icon {
+    color: #657786;
+    cursor: pointer;
+  }
+  
+  .tweet-like-count {
+    margin-left: 5px;
+    color: #657786;
+  }
+  
+  

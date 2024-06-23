@@ -39,9 +39,7 @@ function App() {
         </Routes>
       </div>
 
-      <div className="BottomBar">
-        <p>© 2024 Y Corp.</p>
-      </div>
+      
     </div>
   );
 }

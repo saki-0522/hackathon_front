@@ -1,5 +1,6 @@
 import React from "react";
-import "../App.css";
+// import "../App.css";
+import "../css/Post.css";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
@@ -70,24 +71,50 @@ function Post() {
 
 
   return (
+    // <div className="App">
+    //   <div>
+    //     <button onClick={goToHomePage}>
+    //       ホーム画面へ
+    //     </button>
+    //   </div>
+    //     <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
+    //       <div>
+    //         <label className="white-text">What' new?: 
+    //         <input
+    //           type={"text"}
+    //           value={content}
+    //           onChange={(e) => setContent(e.target.value)}
+    //           className="txt_1"
+    //         ></input></label>
+    //       </div>
+    //       <button type={"submit"} className="button-container button">POST</button>
+    //     </form>
+    // </div>
     <div className="App">
-      <div>
-        <button onClick={goToHomePage}>
+      <div className="header">
+        <button onClick={goToHomePage} className="home-button">
           ホーム画面へ
         </button>
       </div>
-        <form style={{ display: "flex", flexDirection: "column" }} onSubmit={handleSubmit}>
-          <div>
-            <label className="white-text">What' new?: 
-            <input
-              type={"text"}
+      <form className="tweet-form" onSubmit={handleSubmit}>
+        <div className="tweet-box">
+          {/* <img src="profile-placeholder.png" alt="Profile" className="profile-pic" /> */}
+          <div className="tweet-input-container">
+            <textarea
+              placeholder="What's happening?"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="txt_1"
-            ></input></label>
+              className="tweet-input"
+            ></textarea>
           </div>
-          <button type={"submit"} className="button-container button">POST</button>
-        </form>
+        </div>
+        <div className="tweet-footer">
+          <span className="char-count">{200 - content.length}</span>
+          <button type="submit" className="tweet-button" disabled={content.length === 0}>
+            投稿
+          </button>
+        </div>
+      </form>
     </div>
     );
   }

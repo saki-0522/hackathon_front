@@ -68,16 +68,10 @@ const signInWithEmailandPassword = () => {
   return (
     <>
     <Container>
-      {/* <Button onClick={handleOpen}>ログイン画面へ</Button> */}
-      {/* <Modal open={open} onClose={handleOpen}> */}
         <StyledPaper>
           <form className='form' onSubmit={handleSubmit}>
             <Typography variant={'h5'} className='word'>ログイン</Typography>
             <TextField
-                // style={{ color: "#1DA1F2" }}
-              //   InputLabelProps={{
-              //     style: { color: "#1DA1F2" }, // ラベルの色を青色に設定
-              // }}
                 label="メールアドレス"
                 variant="standard"
                 className="text"
@@ -112,7 +106,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh; /* 画面全体の高さを使用 */
-  background-color: #f0f0f0; /* 背景色を追加 */
+  background-color: white;
+  flex-direction: column;
 `;
 
 const StyledPaper = styled(Paper)`

@@ -36,6 +36,7 @@ async function Liked(status: number): Promise<void>{
             
         }
     );
+    console.log(response);
     if (response.status === 200) {
         sessionStorage.removeItem('id');
         sessionStorage.removeItem('post_id');
