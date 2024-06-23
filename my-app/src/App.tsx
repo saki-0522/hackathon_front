@@ -13,6 +13,7 @@ import EachPost from './pages/Each_Post';
 import First from './pages/First';
 import Login from './pages/Login';
 import VideoStream from './pages/Video'
+import Human from './pages/Human'
 
 function App() {
   // stateとしてログイン状態を管理する。ログインしていないときはnullになる。
@@ -36,6 +37,7 @@ function App() {
           <Route path="/eachpost" element={<EachPost />} />
           <Route path="/first" element={<First />} />
           <Route path="/video" element={<VideoStream />} />
+          <Route path="/human" element={<Human />} />
         </Routes>
       </div>
 

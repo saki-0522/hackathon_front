@@ -4,6 +4,7 @@ import "../css/Post.css";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
+// import SpeechInput from './Speech';
 
 interface UserData {
   name: string;
@@ -106,6 +107,7 @@ function Post() {
               onChange={(e) => setContent(e.target.value)}
               className="tweet-input"
             ></textarea>
+            {/* <SpeechInput /> */}
           </div>
         </div>
         <div className="tweet-footer">

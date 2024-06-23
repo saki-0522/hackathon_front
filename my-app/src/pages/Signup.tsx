@@ -54,7 +54,8 @@ const Signup: React.FC = () => {
       setUserName(displayName);
       sendUserInfo(user);
       sessionStorage.setItem('user', JSON.stringify({...user, displayName: displayName, email: email, uid: user.uid}));
-      navigate('/');
+      // navigate('/');
+      navigate('/human');
     }).catch((error) => {
       const errorMessage = error.message;
       alert(errorMessage);

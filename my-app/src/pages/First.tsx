@@ -16,36 +16,6 @@ function First() {
         navigate('/login');
     }
 
-
-//   return (
-//     <div className="overlay">
-//       {/* ページの上に表示させたい内容 */}
-//       <div className="overlay-content">
-//         <Typography>Overlay Content</Typography>
-//       </div>
-//     </div>
-//     // <Portal>
-//     //   <Paper elevation={3} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 200, height: 200, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-//     //     {/* ページの上に表示させたい内容 */}
-//     //     {/* <Typography>Overlay Content</Typography> */}
-//     //     <Typography variant="h1" color="primary">
-//     //         This is a Heading
-//     //     </Typography>
-//     //     <Typography variant="body1" color="textSecondary">
-//     //         This is a paragraph of text.
-//     //     </Typography>
-//     //   </Paper>
-//     // </Portal>
-//     );
-    // return ReactDOM.createPortal(
-    //     <div className="overlay">
-    //     <div className="overlay-content">
-    //         <Typography>Overlay Content</Typography>
-    //         <Signup /> {/* ログインページをここに表示する */}
-    //     </div>
-    //     </div>,
-    //     document.body
-    // );
     return (
         // <div className="page">
         <Container>
