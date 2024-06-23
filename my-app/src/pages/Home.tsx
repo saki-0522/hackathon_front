@@ -209,9 +209,12 @@ function Home() {
           <div className="put">
           </div>
           <div>
-            <PostButton />
+            {/* <PostButton /> */}
             <button onClick={goToPostPage} className="button2">
               POST
+            </button>
+            <button onClick={signOutWithEmailAndPassword} className="button2">
+              LOG OUT
             </button>
           </div>
         </div>

@@ -223,12 +223,12 @@ function EachPost() {
       <div className="menu">
         <div className="item">
           <div className="put">
-            <Container className="item2">
+            {/* <Container className="item2"> */}
               <HomeButton />
-              <button onClick={goToHomePage} className="button2 item2">
+              <button onClick={goToHomePage} className="button2">
                 HOME
               </button>
-            </Container>
+            {/* </Container> */}
           </div>
           <div>
             <PostButton />
